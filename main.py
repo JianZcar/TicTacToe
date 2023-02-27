@@ -138,7 +138,7 @@ class GameWindow:
         self.label_winner = ttk.Label(self.frame2, text='')
         self.label_winner.grid_configure(row=0, column=0, pady=5)
         self.label_winner.configure(font=('Helvetica', 15))
-        self.restart_button = ttk.Button(self.frame2, text='Restart', takefocus=False, command=lambda: restart_game(
+        self.restart_button = ttk.Button(self.frame2, text='Reset', takefocus=False, command=lambda: restart_game(
             self.frame, self.label_winner))
         self.restart_button.grid_configure(row=1, column=0)
 
