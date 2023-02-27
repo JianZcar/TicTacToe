@@ -89,11 +89,11 @@ def update_board(grid, column, row, button, label):
 
 def button_tic_tac_toe(master, column_, row_, label):
     style = ttk.Style()
-    style.configure('Custom.TButton', width=0, font=("Helvetica", 30))
+    style.configure('Custom.TButton', width=0, font=('Helvetica', 30))
 
     button = ttk.Button(master, style='Custom.TButton', takefocus=False,
                         command=lambda: update_board(board, column_, row_, button, label=label))
-    button.grid_configure(column=column_, row=row_, sticky="nsew")
+    button.grid_configure(column=column_, row=row_, sticky='nsew')
     master.rowconfigure(row_, minsize=65)
     master.columnconfigure(column_, minsize=65)
     return button
@@ -137,7 +137,7 @@ class GameWindow:
 
         self.label_winner = ttk.Label(self.frame2, text='')
         self.label_winner.grid_configure(row=0, column=0, pady=5)
-        self.label_winner.configure(font=("Helvetica", 15))
+        self.label_winner.configure(font=('Helvetica', 15))
         self.restart_button = ttk.Button(self.frame2, text='Restart', takefocus=False, command=lambda: restart_game(
             self.frame, self.label_winner))
         self.restart_button.grid_configure(row=1, column=0)
