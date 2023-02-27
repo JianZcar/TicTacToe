@@ -9,30 +9,27 @@ board = [
     ['', '', '']
 ]
 winner = ''
-win = False
+game_over = False
 
 
 def display_text(widget, text_):
     widget.configure(text=text_)
 
 
+def winning_combi(x):
+    list_ = []
+    if x == 0:
+        list_ = [x, x + 1, x + 2]
+    elif x == 1:
+        list_ = [x + 1, x, x - 1]
+    elif x == 2:
+        list_ = [x - 2, x - 1, x]
+    return list_
+
+
 def winner_check(grid, column, row):
-    columns = []
-    rows = []
-
-    if column == 0:
-        columns = [column, column + 1, column + 2]
-    elif column == 1:
-        columns = [column + 1, column, column - 1]
-    elif column == 2:
-        columns = [column - 2, column - 1, column]
-
-    if row == 0:
-        rows = [row, row + 1, row + 2]
-    elif row == 1:
-        rows = [row + 1, row, row - 1]
-    elif row == 2:
-        rows = [row - 2, row - 1, row]
+    columns = winning_combi(column)
+    rows = winning_combi(row)
 
     r_columns = reversed(rows)
 
@@ -63,11 +60,11 @@ def winner_check(grid, column, row):
 
 
 def update_board(grid, column, row, button, label):
-    global win
+    global game_over
     global winner
     global turn
     if grid[row][column] == '':
-        if not win:
+        if not game_over:
             if turn == 1:
                 grid[row][column] = 'O'
                 display_text(button, 'O')
@@ -79,12 +76,12 @@ def update_board(grid, column, row, button, label):
 
             for x in grid:
                 print(x)
-    if not win:
-        win = winner_check(grid, column, row)
+    if not game_over:
+        game_over = winner_check(grid, column, row)
         if winner_check(grid, column, row):
             winner = grid[row][column]
             display_text(label, f'Winner : {winner}')
-        print(win, winner)
+        print(game_over, winner)
 
 
 def button_tic_tac_toe(master, column_, row_, label):
@@ -102,7 +99,7 @@ def button_tic_tac_toe(master, column_, row_, label):
 def restart_game(window, winner_):
     global turn
     global board
-    global win
+    global game_over
     global winner
     turn = 1
     board = [
@@ -111,7 +108,7 @@ def restart_game(window, winner_):
         ['', '', '']
     ]
     winner = ''
-    win = False
+    game_over = False
     for widgets in window.winfo_children():
         display_text(widgets, '')
     display_text(winner_, '')
@@ -141,16 +138,12 @@ class GameWindow:
         self.restart_button = ttk.Button(self.frame2, text='Reset', takefocus=False, command=lambda: restart_game(
             self.frame, self.label_winner))
         self.restart_button.grid_configure(row=1, column=0)
-
-        self.button0 = button_tic_tac_toe(self.frame, 0, 0, self.label_winner)
-        self.button1 = button_tic_tac_toe(self.frame, 1, 0, self.label_winner)
-        self.button2 = button_tic_tac_toe(self.frame, 2, 0, self.label_winner)
-        self.button3 = button_tic_tac_toe(self.frame, 0, 1, self.label_winner)
-        self.button4 = button_tic_tac_toe(self.frame, 1, 1, self.label_winner)
-        self.button5 = button_tic_tac_toe(self.frame, 2, 1, self.label_winner)
-        self.button6 = button_tic_tac_toe(self.frame, 0, 2, self.label_winner)
-        self.button7 = button_tic_tac_toe(self.frame, 1, 2, self.label_winner)
-        self.button8 = button_tic_tac_toe(self.frame, 2, 2, self.label_winner)
+        self.game_grid = []
+        for y in range(3):
+            row_ = []
+            for x in range(3):
+                row_.append(button_tic_tac_toe(self.frame, x, y, self.label_winner))
+            self.game_grid.append(row_)
 
 
 if __name__ == '__main__':
